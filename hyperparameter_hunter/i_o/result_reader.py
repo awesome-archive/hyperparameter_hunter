@@ -1,9 +1,9 @@
 ##################################################
 # Import Own Assets
 ##################################################
-from hyperparameter_hunter.exceptions import IncompatibleCandidateError
 from hyperparameter_hunter.feature_engineering import EngineerStep, FeatureEngineer
-from hyperparameter_hunter.library_helpers.keras_helper import (
+from hyperparameter_hunter.i_o.exceptions import IncompatibleCandidateError
+from hyperparameter_hunter.compat.keras_helper import (
     keras_callback_to_dict,
     keras_initializer_to_dict,
 )

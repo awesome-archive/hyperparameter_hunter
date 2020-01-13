@@ -43,7 +43,6 @@ setup(
     license="MIT",
     packages=find_packages(),
     install_requires=[
-        "dill",
         "nbconvert",
         "nbformat",
         "numpy",
@@ -60,10 +59,8 @@ setup(
         "travis": [
             "pytest>=4.0",
             "pytest-cov",
-            "black",
             "hyperparameter-hunter",
-            "keras",
-            "tensorflow",
+            "pyyaml",
             "xgboost",
             "coveralls",
             "codecov",

@@ -25,23 +25,23 @@ from hyperparameter_hunter.algorithm_handlers import (
     identify_algorithm,
     identify_algorithm_hyperparameters,
 )
-from hyperparameter_hunter.exceptions import (
+from hyperparameter_hunter.experiments import CVExperiment
+from hyperparameter_hunter.feature_engineering import FeatureEngineer
+from hyperparameter_hunter.i_o.exceptions import (
     EnvironmentInactiveError,
     EnvironmentInvalidError,
     RepeatedExperimentError,
     DeprecatedWarning,
 )
-from hyperparameter_hunter.experiments import CVExperiment
-from hyperparameter_hunter.feature_engineering import FeatureEngineer
-from hyperparameter_hunter.library_helpers.keras_helper import reinitialize_callbacks
-from hyperparameter_hunter.library_helpers.keras_optimization_helper import (
+from hyperparameter_hunter.i_o.reporting import OptimizationReporter
+from hyperparameter_hunter.i_o.result_reader import finder_selector
+from hyperparameter_hunter.compat.keras_helper import reinitialize_callbacks
+from hyperparameter_hunter.compat.keras_optimization_helper import (
     keras_prep_workflow,
     link_choice_ids,
 )
 from hyperparameter_hunter.metrics import get_formatted_target_metric
 from hyperparameter_hunter.optimization.backends.skopt.engine import Optimizer, cook_estimator
-from hyperparameter_hunter.reporting import OptimizationReporter
-from hyperparameter_hunter.result_reader import finder_selector
 from hyperparameter_hunter.settings import G, TEMP_MODULES_DIR_PATH
 from hyperparameter_hunter.space.dimensions import RejectedOptional
 from hyperparameter_hunter.space.space_core import Space
@@ -694,9 +694,7 @@ class BaseOptPro(metaclass=MergedOptProMeta):
         """Check that there is a currently active and unoccupied Environment instance"""
         if G.Env is None:
             raise EnvironmentInactiveError()
-        if G.Env.current_task is None:
-            G.log_(f'Validated Environment with key: "{G.Env.cross_experiment_key}"')
-        else:
+        if G.Env.current_task is not None:
             raise EnvironmentInvalidError("Must finish current task before starting a new one")
 
     def _validate_parameters(self):
